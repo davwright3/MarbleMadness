@@ -115,6 +115,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1442400755792973254}
   - component: {fileID: 171577565181443475}
+  - component: {fileID: 8027886391573350212}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Untagged
@@ -150,7 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3264745855
+  GlobalObjectIdHash: 1244476753
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -159,3 +160,15 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+--- !u!114 &8027886391573350212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6703601329508808403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d34c6d2656a22349a31d85eba0560a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
