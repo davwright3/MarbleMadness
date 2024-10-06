@@ -6,7 +6,7 @@ using Unity.Netcode;
 public class PlayerNetwork : NetworkBehaviour
 {
 
-    private ClientNetworkTransform _transform;
+   
 
     private void Update()
     {
