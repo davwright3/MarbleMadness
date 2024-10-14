@@ -2,48 +2,82 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using UnityEngine.UI;
+using Unity.VisualScripting;
 
 public class BallBehavior : NetworkBehaviour
 {
+    //materials for changing color based on userId
+    [SerializeField] Material redBallMaterial;
+    [SerializeField] Material blueBallMaterial;
 
-    public Material redBallMaterial;
-    public Material blueBallMaterial;
-    
-    public GameObject marble;
-    public Rigidbody body;
+    //the gameobject itself and its rigidbody for physics and materials
+    [SerializeField] GameObject marble;
+    [SerializeField] Rigidbody body;
 
+    //initial settings for the motion of the ball
     [SerializeField] Vector3 startVector = new Vector3(5f, 0, 2f);
-    public float drag = 0.5f;
+    [SerializeField] float drag = 0.5f;
 
-    
-    
+    private ulong ownerId;
+    private int points = 0;
+        
 
-    
+
     public void Start() {
+        ownerId = NetworkManager.Singleton.LocalClientId;
+
         Renderer renderer = marble.GetComponentInChildren<Renderer>();
 
         if (OwnerClientId == 0)
         {
             renderer.material = redBallMaterial;
         }
-        else if (OwnerClientId == 1) { 
+        else if (OwnerClientId == 1) {
             renderer.material = blueBallMaterial;
         }
 
         body.AddForce(startVector, ForceMode.Impulse);
         body.drag = drag;
-        
+
     }
 
     public void Update()
     {
-        
 
-        /*if (this.speed > 0)
-        {
-            this.speed = this.speed - this.deceleration;
-        }*/
-        
+
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        NetworkObject collider = collision.gameObject.GetComponent<NetworkObject>();
+        ulong colliderId = 0;
+
+        if (collider != null)
+        {
+            colliderId = collider.OwnerClientId;
+        }
+
+
+        if (collision.gameObject.tag == "Wall")
+        {
+            points -= 1;
+            Debug.Log("Collilded with " + collision.gameObject.tag + ":  " + points + " points");
+        }
+        else if (collision.gameObject.tag == "Ball" && colliderId != ownerId)
+        {
+
+            points += 5;
+            Debug.Log("Collilded with " + collision.gameObject.tag + ":  " + points + " points");
+        }
+        else if (collision.gameObject.tag == "Ball" && colliderId == ownerId)
+        {
+
+            points -= 1;
+            Debug.Log("Collilded with " + collision.gameObject.tag + ":  " + points + " points");
+        }
+    }
+    
+        
 
 }
