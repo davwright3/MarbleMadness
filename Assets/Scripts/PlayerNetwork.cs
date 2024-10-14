@@ -26,6 +26,7 @@ public class PlayerNetwork : NetworkBehaviour
 
 
 
+
         if (Input.GetMouseButtonDown(0)) {
 
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -33,7 +34,7 @@ public class PlayerNetwork : NetworkBehaviour
 
             if (Physics.Raycast(ray, out hit)) {
 
-                SpawnBallServerRpc(hit.point);
+                SpawnBallServerRpc(hit.point, NetworkManager.Singleton.LocalClientId);
             }
 
             
@@ -57,10 +58,11 @@ public class PlayerNetwork : NetworkBehaviour
 
 
     [ServerRpc]
-    void SpawnBallServerRpc(Vector3 spawnPosition) {
+    void SpawnBallServerRpc(Vector3 spawnPosition, ulong clientId) {
 
+                
         Transform spawnedBallTransform = Instantiate(spawnedBall, spawnPosition, Quaternion.identity);
-        spawnedBallTransform.GetComponent<NetworkObject>().Spawn(true);
+        spawnedBallTransform.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
 
     }
     

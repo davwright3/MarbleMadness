@@ -3,28 +3,46 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
-public class BallBehavior : MonoBehaviour
+public class BallBehavior : NetworkBehaviour
 {
 
-    [SerializeField] Vector3 movDir = new Vector3(0, 0, 0);
-    [SerializeField] float speed = 3.0f;
-    [SerializeField] float deceleration = 0.00001f;
-    [SerializeField] Vector3 startVector = new Vector3(1, 0, 1);
+    public Material redBallMaterial;
+    public Material blueBallMaterial;
+    
+    public GameObject marble;
+    public Rigidbody body;
+
+    [SerializeField] Vector3 startVector = new Vector3(5f, 0, 2f);
+    public float drag = 0.5f;
 
     
-    public void OnNetworkSpawn() { 
+    
 
+    
+    public void Start() {
+        Renderer renderer = marble.GetComponentInChildren<Renderer>();
+
+        if (OwnerClientId == 0)
+        {
+            renderer.material = redBallMaterial;
+        }
+        else if (OwnerClientId == 1) { 
+            renderer.material = blueBallMaterial;
+        }
+
+        body.AddForce(startVector, ForceMode.Impulse);
+        body.drag = drag;
         
     }
 
     public void Update()
     {
-        this.transform.position += startVector * speed * Time.deltaTime;
+        
 
-        if (this.speed > 0)
+        /*if (this.speed > 0)
         {
             this.speed = this.speed - this.deceleration;
-        }
+        }*/
         
     }
 

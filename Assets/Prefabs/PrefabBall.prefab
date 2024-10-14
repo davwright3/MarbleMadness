@@ -91,7 +91,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 825864210135685997}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 73ac9f48f54418249bb4f8bc177b1be8, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -173,10 +173,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 089cf1db22af0884b91c5efb8d2b5413, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movDir: {x: 0, y: 0, z: 0}
-  speed: 3
-  deceleration: 1
-  startVector: {x: 1, y: 0, z: 1}
+  redBallMaterial: {fileID: 2100000, guid: 57d461039a39d59468aade01ff7691b7, type: 2}
+  blueBallMaterial: {fileID: 2100000, guid: acdb1b2bc44b6d84d951ca971656bfb7, type: 2}
+  marble: {fileID: 1936932966250128817}
+  body: {fileID: -803570457887093438}
+  startVector: {x: 10, y: 1, z: 10}
+  drag: 0.5
 --- !u!54 &-803570457887093438
 Rigidbody:
   m_ObjectHideFlags: 0
