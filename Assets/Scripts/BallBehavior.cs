@@ -48,6 +48,11 @@ public class BallBehavior : NetworkBehaviour
 
     }
 
+    public void InitializeBall(Vector3 initVector) { 
+        startVector = initVector;
+    
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         NetworkObject collider = collision.gameObject.GetComponent<NetworkObject>();

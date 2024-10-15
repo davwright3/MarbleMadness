@@ -2040,7 +2040,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 472784396}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1917211793}
+        m_TargetAssemblyTypeName: ButtonController, Assembly-CSharp
+        m_MethodName: OnUpButtonClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &472784396
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3931,7 +3943,7 @@ MonoBehaviour:
     PlayerPrefab: {fileID: 6703601329508808403, guid: 9e8916cd487c951469a83938f7213a91, type: 3}
     Prefabs:
       NetworkPrefabsLists:
-      - {fileID: 11400000, guid: 9fa3edf6b934eab488370354cce40acd, type: 2}
+      - {fileID: 11400000, guid: b8ad045c53f115147affb3d871bda842, type: 2}
     TickRate: 30
     ClientConnectionBufferTimeout: 10
     ConnectionApproval: 0
@@ -4337,7 +4349,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1917211791}
-  - component: {fileID: 1917211792}
+  - component: {fileID: 1917211793}
   m_Layer: 5
   m_Name: DirButtons
   m_TagString: Untagged
@@ -4372,7 +4384,7 @@ RectTransform:
   m_AnchoredPosition: {x: 150, y: -150}
   m_SizeDelta: {x: 300, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1917211792
+--- !u!114 &1917211793
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4381,18 +4393,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1917211790}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01bab70d2e78c66439f523ddff802d63, type: 3}
+  m_Script: {fileID: 11500000, guid: 2b5bcd200497be749a555d58c0f7fed1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ball: {fileID: 1936932966250128817, guid: 526c94b309fde7e4ead5ab3a85be5be8, type: 3}
-  leftButton: {fileID: 0}
-  upLeftButton: {fileID: 0}
-  upButton: {fileID: 0}
-  upRightButton: {fileID: 0}
-  rightButton: {fileID: 0}
-  downRightButton: {fileID: 0}
-  downButton: {fileID: 0}
-  downLeftButton: {fileID: 0}
+  upButton: {fileID: 472784395}
 --- !u!1 &2056162614
 GameObject:
   m_ObjectHideFlags: 0

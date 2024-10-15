@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using UnityEngine.UI;
 
 public class PlayerNetwork : NetworkBehaviour
 {
@@ -9,6 +10,10 @@ public class PlayerNetwork : NetworkBehaviour
     private NetworkVariable<int> randomNumber = new NetworkVariable<int>(1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
     [SerializeField] private Transform spawnedBall;
+
+    [SerializeField] private Vector3 initialVector = new Vector3(1f, 0f, 1f);
+
+    [SerializeField] Button upButton;
 
     public override void OnNetworkSpawn()
     {
@@ -62,9 +67,16 @@ public class PlayerNetwork : NetworkBehaviour
 
                 
         Transform spawnedBallTransform = Instantiate(spawnedBall, spawnPosition, Quaternion.identity);
-        spawnedBallTransform.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
+        BallBehavior newBall = spawnedBallTransform.GetComponent<BallBehavior>();
+        newBall.InitializeBall(initialVector);
+        newBall.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
         
 
+    }
+
+    public void SetInitialVectorFromUI(Vector3 sentInitialVector) {
+        initialVector = sentInitialVector;
+    
     }
     
 }
