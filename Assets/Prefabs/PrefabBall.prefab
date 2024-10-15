@@ -177,7 +177,7 @@ MonoBehaviour:
   blueBallMaterial: {fileID: 2100000, guid: acdb1b2bc44b6d84d951ca971656bfb7, type: 2}
   marble: {fileID: 1936932966250128817}
   body: {fileID: -803570457887093438}
-  startVector: {x: 10, y: 1, z: 10}
+  startVector: {x: 5, y: 0, z: 0}
   drag: 0.5
 --- !u!54 &-803570457887093438
 Rigidbody:

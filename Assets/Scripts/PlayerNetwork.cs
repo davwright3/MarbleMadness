@@ -11,7 +11,7 @@ public class PlayerNetwork : NetworkBehaviour
 
     [SerializeField] private Transform spawnedBall;
 
-    [SerializeField] private Vector3 initialVector = new Vector3(1f, 0f, 1f);
+    [SerializeField] private NetworkVariable<Vector3> initialVector = new NetworkVariable<Vector3>();
 
     [SerializeField] Button upButton;
 
@@ -40,6 +40,7 @@ public class PlayerNetwork : NetworkBehaviour
             if (Physics.Raycast(ray, out hit)) {
 
                 SpawnBallServerRpc(hit.point, NetworkManager.Singleton.LocalClientId);
+
             }
 
             
@@ -62,20 +63,21 @@ public class PlayerNetwork : NetworkBehaviour
 
 
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership =false)]
     void SpawnBallServerRpc(Vector3 spawnPosition, ulong clientId) {
 
-                
+        Vector3 vectorInit = initialVector.Value;   
         Transform spawnedBallTransform = Instantiate(spawnedBall, spawnPosition, Quaternion.identity);
         BallBehavior newBall = spawnedBallTransform.GetComponent<BallBehavior>();
-        newBall.InitializeBall(initialVector);
+        newBall.InitializeBall(vectorInit);
         newBall.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
         
 
     }
 
+    
     public void SetInitialVectorFromUI(Vector3 sentInitialVector) {
-        initialVector = sentInitialVector;
+        initialVector.Value = sentInitialVector;
     
     }
     

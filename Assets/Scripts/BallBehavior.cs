@@ -16,7 +16,7 @@ public class BallBehavior : NetworkBehaviour
     [SerializeField] Rigidbody body;
 
     //initial settings for the motion of the ball
-    [SerializeField] Vector3 startVector = new Vector3(5f, 0, 2f);
+    [SerializeField] NetworkVariable<Vector3> startVector = new NetworkVariable<Vector3>();
     [SerializeField] float drag = 0.5f;
 
     private ulong ownerId;
@@ -37,7 +37,7 @@ public class BallBehavior : NetworkBehaviour
             renderer.material = blueBallMaterial;
         }
 
-        body.AddForce(startVector, ForceMode.Impulse);
+        body.AddForce(startVector.Value, ForceMode.Impulse);
         body.drag = drag;
 
     }
@@ -49,7 +49,7 @@ public class BallBehavior : NetworkBehaviour
     }
 
     public void InitializeBall(Vector3 initVector) { 
-        startVector = initVector;
+        startVector.Value = initVector;
     
     }
 

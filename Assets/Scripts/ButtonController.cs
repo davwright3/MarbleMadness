@@ -23,11 +23,18 @@ public class ButtonController : MonoBehaviour
         
     }
 
-    public void OnUpButtonClicked() {
-        FindLocalPlayer();
+    [ServerRpc(RequireOwnership =false)]
+    public void OnUpButtonClickedServerRpc() {
+        //FindLocalPlayer();
         //networkedPlayer.SetInitialVectorFromUI(initialMovement);
-        Debug.Log("Up Button Clicked");
-        networkedPlayer.SetInitialVectorFromUI(new Vector3(0f, 0f, 10f));
+
+        PlayerNetwork[] players = FindObjectsOfType<PlayerNetwork>();
+
+        foreach (var player in players)
+        {
+            Debug.Log("Up Button Clicked");
+            player.SetInitialVectorFromUI(new Vector3(0f, 0f, 10f));
+        }
         
     
     }
