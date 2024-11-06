@@ -19,12 +19,12 @@ public class BallBehavior : NetworkBehaviour
     [SerializeField] NetworkVariable<Vector3> startVector = new NetworkVariable<Vector3>();
     [SerializeField] float drag = 0.5f;
 
-    private ulong ownerId;
-    private int points = 0;
+    [SerializeField] ulong ownerId;
+    [SerializeField] int points = 0;
         
 
-
-    public void Start() {
+    //setting up the color of the balls when they spawn on the network
+    public override void OnNetworkSpawn() {
         ownerId = NetworkManager.Singleton.LocalClientId;
 
         Renderer renderer = marble.GetComponentInChildren<Renderer>();
@@ -41,18 +41,15 @@ public class BallBehavior : NetworkBehaviour
         body.drag = drag;
 
     }
+        
 
-    public void Update()
-    {
-
-
-    }
-
+    //method to initialize the ball from the player script
     public void InitializeBall(Vector3 initVector) { 
         startVector.Value = initVector;
     
     }
 
+    //collision detection for getting points.  need to make sure to ignore the floor since the balls bounce a bit when they collide so it causes issues
     private void OnCollisionEnter(Collision collision)
     {
         NetworkObject collider = collision.gameObject.GetComponent<NetworkObject>();
@@ -82,7 +79,11 @@ public class BallBehavior : NetworkBehaviour
             Debug.Log("Collilded with " + collision.gameObject.tag + ":  " + points + " points");
         }
     }
-    
+
+
+    public int GetPoints() { 
+        return points;
+    }
         
 
 }
