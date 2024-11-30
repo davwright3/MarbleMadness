@@ -12,7 +12,12 @@ public class PlayerNetwork : NetworkBehaviour
 
     [SerializeField] private Transform spawnedBall;
 
-    [SerializeField] private NetworkVariable<Vector3> initialVector = new NetworkVariable<Vector3>();
+    [SerializeField] private NetworkVariable<Vector3> _initialVector = new NetworkVariable<Vector3>();
+    [SerializeField] private NetworkVariable<int> _initialSpeed = new NetworkVariable<int>(1);
+
+    private GameObject _gameManager;
+    private Transform _bucket0;
+    private Transform _bucket1;
 
     //[SerializeField] Button upButton;
 
@@ -22,7 +27,9 @@ public class PlayerNetwork : NetworkBehaviour
     [SerializeField] int turnId;
     [SerializeField] int playerID;
 
-    public int playerScore = 0;
+    //public NetworkVariable<int> player0Score = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone);
+    //public NetworkVariable<int> player1Score = new NetworkVariable<int>(0, NetworkVariableReadPermission.Everyone);
+
 
     public override void OnNetworkSpawn()
     {
@@ -35,6 +42,25 @@ public class PlayerNetwork : NetworkBehaviour
         playerID = (int)OwnerClientId;
         gameManager = GameObject.FindGameObjectWithTag("Game Manager"); 
         turnCounterVar = gameManager.GetComponent<TurnCounter>();
+
+        _gameManager = GameObject.Find("GameManager");
+        _bucket0 = _gameManager.GetComponent<Transform>().Find("Player_0_Bucket"); 
+        _bucket1 = _gameManager.GetComponent<Transform>().Find("Player_1_Bucket");
+
+        if (_gameManager == null)
+        {
+            Debug.Log("GameManager is NULL");
+        }
+
+        if (_bucket0 == null)
+        {
+            Debug.Log("bucket0 is NULL");
+        }
+
+        if (_bucket1 == null)
+        {
+            Debug.Log("bucket1 is NULL");
+        }
         
 
     }
@@ -81,21 +107,38 @@ public class PlayerNetwork : NetworkBehaviour
     void SpawnBallServerRpc(Vector3 spawnPosition, ulong clientId) {
 
         //initial vector from the player object        
-        Vector3 vectorInit = initialVector.Value;   
+        Vector3 vectorInit = _initialVector.Value;   
+        int startSpeed = _initialSpeed.Value;
+        
         Transform spawnedBallTransform = Instantiate(spawnedBall, spawnPosition, Quaternion.identity);
         BallBehavior newBall = spawnedBallTransform.GetComponent<BallBehavior>();
-        newBall.InitializeBall(vectorInit);
+        newBall.InitializeBall(vectorInit, startSpeed);
         newBall.GetComponent<NetworkObject>().SpawnWithOwnership(clientId);
-        
 
+        if (clientId == 0)
+        {
+            newBall.transform.parent = _bucket0;
+            
+        }
+        else if (clientId == 1)
+        {
+            newBall.transform.parent = _bucket1;
+        }
+        
     }
 
 
     //getting the initial vector from the button controller
     [ServerRpc(RequireOwnership =false)]
     public void SetInitialVectorFromUIServerRpc(Vector3 sentInitialVector) {
-        initialVector.Value = sentInitialVector;
+        _initialVector.Value = sentInitialVector;
     
+    }
+
+    [ServerRpc(RequireOwnership =false)]
+    public void SetInitialSpeedFromUIServerRpc(int speed)
+    {
+        _initialSpeed.Value = speed;
     }
 
     //coroutine to delay calculating the score
@@ -103,10 +146,10 @@ public class PlayerNetwork : NetworkBehaviour
 
         while (true)
         {
-            Debug.Log("Calculating Score");
+            //Debug.Log("Calculating Score");
             CalculatePlayerScoreServerRpc();
 
-            yield return new WaitForSeconds(2.0f);
+            yield return new WaitForSeconds(5.0f);
         }
     }
 
@@ -122,7 +165,7 @@ public class PlayerNetwork : NetworkBehaviour
     //score needs to go through all of the marbles that belong to the player and add up their points
     [ServerRpc(RequireOwnership =false)]
     void CalculatePlayerScoreServerRpc() {
-        playerScore = 0;
+        /*int playerScore = 0;
 
         //find all of the balls in the scene
         GameObject[] taggedBalls = GameObject.FindGameObjectsWithTag("Ball");
@@ -139,8 +182,33 @@ public class PlayerNetwork : NetworkBehaviour
                 playerScore += ballScore;
             }
         }
+        */
 
-        DisplayScoreClientRpc(playerScore);
+
+        //update the network variable
+        if (playerID == 0)
+        {
+            int thisScore = 0;
+
+            foreach (Transform child in _bucket0)
+            {
+                thisScore += child.GetComponent<BallBehavior>().GetPoints();
+            }
+
+            _gameManager.GetComponent<GameManager>().SetPlayer0Score(thisScore);
+        }
+        else if (playerID == 1)
+        {
+            int thisScore = 0;
+
+            foreach (Transform child in _bucket1)
+            {
+                thisScore += child.GetComponent<BallBehavior>().GetPoints();
+            }
+
+            _gameManager.GetComponent<GameManager>().SetPlayer1Score(thisScore);
+        }
+
         
     }
 

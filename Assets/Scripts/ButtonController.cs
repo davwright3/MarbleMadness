@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Unity.Netcode;
+using UnityEditor;
 
 public class ButtonController : MonoBehaviour
 {
@@ -137,6 +138,39 @@ public class ButtonController : MonoBehaviour
 
     }
 
+    [ServerRpc(RequireOwnership =false)]
+    public void OnFastButtonClickedServerRpc()
+    {
+        PlayerNetwork[] players = FindObjectsOfType<PlayerNetwork>();
+
+        foreach (var player in players)
+        {
+            player.SetInitialSpeedFromUIServerRpc(3);
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void OnMediumButtonClickedServerRpc()
+    {
+        PlayerNetwork[] players = FindObjectsOfType<PlayerNetwork>();
+
+        foreach (var player in players)
+        {
+            player.SetInitialSpeedFromUIServerRpc(2);
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void OnSlowButtonClickedServerRpc()
+    {
+        PlayerNetwork[] players = FindObjectsOfType<PlayerNetwork>();
+
+        foreach (var player in players )
+        {
+            player.SetInitialSpeedFromUIServerRpc(1);
+        }
+    }
+
     void FindLocalPlayer() {
         PlayerNetwork[] players = FindObjectsOfType<PlayerNetwork>();
 
@@ -151,5 +185,7 @@ public class ButtonController : MonoBehaviour
         ulong localPlayerId = localPlayer.OwnerClientId;
         Debug.Log("Local user is: " +  localPlayerId);
     }
+
+
     
 }
