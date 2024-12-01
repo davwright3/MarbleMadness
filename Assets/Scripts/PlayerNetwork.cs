@@ -77,7 +77,6 @@ public class PlayerNetwork : NetworkBehaviour
         if (playerID == turnId % 2)
         {
 
-
             if (Input.GetMouseButtonDown(0))
             {
 
@@ -165,24 +164,7 @@ public class PlayerNetwork : NetworkBehaviour
     //score needs to go through all of the marbles that belong to the player and add up their points
     [ServerRpc(RequireOwnership =false)]
     void CalculatePlayerScoreServerRpc() {
-        /*int playerScore = 0;
-
-        //find all of the balls in the scene
-        GameObject[] taggedBalls = GameObject.FindGameObjectsWithTag("Ball");
-
-        foreach (GameObject taggedBall in taggedBalls) {
-            int playerId = (int)OwnerClientId;
-
-            NetworkObject selectBall = taggedBall.GetComponent<NetworkObject>();
-            int ballId = (int)selectBall.OwnerClientId;
-
-            if (ballId == playerId) {
-                BallBehavior ballToScore = taggedBall.GetComponent<BallBehavior>();
-                int ballScore = ballToScore.GetPoints();
-                playerScore += ballScore;
-            }
-        }
-        */
+        
 
 
         //update the network variable
